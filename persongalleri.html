@@ -4,27 +4,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Persongalleri</title>
     <link rel="stylesheet" href="">
 
     <style>
         article {
-            border: 1px solid #333;
+            border: 1px solid #000;
             padding: 10px;
         }
 
         img {
-            max-width: 100%;
+            max-width: 30%;
         }
 
         section {
             width: 90vw;
-            max-width: 1100px;
             margin: 0 auto;
-
+            max-width: 1100px;
             display: grid;
             grid-gap: 10px;
-            grid-template-columns: repeat(3, 1f);
+            grid-template-columns: repeat(auto-fill, minmnax(200px, 1f));
         }
 
     </style>
@@ -34,7 +33,7 @@
 <body>
 
     <section>
-
+        <h1>Persongalleri</h1>
     </section>
 
     <template>
@@ -42,16 +41,22 @@
             <h2 class="navn"></h2>
             <img src="" alt="portræt">
             <p class="job">Job</p>
-            <p class="hobby">Hobby:</p>
+            <p class="by">By:</p>
         </article>
     </template>
 
     <script>
-        container = document.querySelector("section");
-        temp = document.querySelector("template");
-
+        let container;
+        let temp;
         const link = "https://spreadsheets.google.com/feeds/list/1mtHhpoEkYqVqr1TSnKQ1_sQZWI7FRVjcw3H1oatDOVQ/od6/public/values?alt=json";
 
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            console.log(start);
+            container = document.querySelector("section");
+            temp = document.querySelector("template");
+        }
 
         async function hentdata() {
             const respons = await fetch(link);
@@ -66,7 +71,7 @@
                 const klon = temp.cloneNode(true).content;
                 klon.querySelector(".navn").textContent = person.gsx$navn.$t;
                 klon.querySelector("img").src = person.gsx$billede.$t;
-                klon.querySelector(".hobby").textContent = person.gsx$hobby.$t;
+                klon.querySelector(".by").textContent = person.gsx$by.$t;
                 klon.querySelector(".job").textContent = person.gsx$job.$t;
                 container.appendChild(klon);
             })
